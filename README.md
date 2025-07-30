@@ -51,6 +51,17 @@ Then run the migration:
 php artisan migrate
 ```
 
+## ✅ Example Usage
+You can apply the middleware to a specific route group like this:
+
+```bash
+use \Imransaleem\HttpDbLogger\Middleware\LogHttpToDatabase;
+
+Route::middleware(['auth', LogHttpToDatabase::class])->group(function () {
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+});
+```
+
 ## ⚙️ Configuration Options
 
 You can customize the logger via `config/http-db-logger.php`. Options include:
