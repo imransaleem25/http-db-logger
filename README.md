@@ -1,6 +1,6 @@
 # Http DB Logger
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/imransaleem/http-db-logger.svg)](https://packagist.org/packages/imransaleem/date-formator)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/imransaleem/http-db-logger.svg)](https://packagist.org/packages/imransaleem/http-db-logger)
 [![License](https://img.shields.io/packagist/l/imransaleem/http-db-logger.svg)](LICENSE)
 
 A Laravel middleware package to log all incoming HTTP requests into the database.
