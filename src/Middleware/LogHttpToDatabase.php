@@ -28,11 +28,20 @@ class LogHttpToDatabase
 
             $response = $next($request);
 
+            $responseBody = null;
+            if (($request->is('api/*') && config('log_api_response')) ||
+                (!$request->is('api/*') && config('log_web_response')) ) {
+
+                $responseBody = method_exists($response, 'getContent')
+                    ? $response->getContent()
+                    : null;
+            }
+
             DB::table($table)
                 ->where('id', $id)
                 ->update([
                     'response_status' => $response->getStatusCode(),
-                    'response_body' => method_exists($response, 'getContent') ? $response->getContent() : null,
+                    'response_body' => $responseBody,
                     'updated_at' => now(),
                 ]);
         } else {

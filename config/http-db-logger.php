@@ -12,6 +12,10 @@ return [
     */
     'log_requests' => true,
 
+    'log_api_response' => true,
+
+    'log_web_response' => false,
+
 
     /*
     |--------------------------------------------------------------------------
