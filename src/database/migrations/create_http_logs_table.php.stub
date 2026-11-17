@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        $tableName = config('http-db-logger.table', 'http_logs');
+        $tableName = config('http-db-logger.table', 'http_db_logs');
         Schema::create($tableName, function (Blueprint $table) {
             $table->id();
             $table->string('method');
@@ -24,7 +24,7 @@ return new class extends Migration {
 
     public function down(): void
     {
-        $tableName = config('http-db-logger.table', 'http_logs');
+        $tableName = config('http-db-logger.table', 'http_db_logs');
         Schema::dropIfExists($tableName);
     }
 };

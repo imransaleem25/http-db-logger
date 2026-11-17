@@ -5,16 +5,19 @@
 
 A Laravel middleware package to log all incoming HTTP requests into the database.
 
+**Requirements:** PHP 8.3+ · Laravel 10, 11, or 12
+
 ---
 
-## 📦 Installation
+## Installation
 
 You can install the package via Composer:
+
 ```bash
 composer require imransaleem/http-db-logger
 ```
 
-## 🔧 Configuration (Optional)
+## Configuration (Optional)
 
 If you're not using Laravel package auto-discovery, add the service provider manually in `config/app.php`:
 
@@ -25,7 +28,9 @@ If you're not using Laravel package auto-discovery, add the service provider man
 ],
 ```
 
-## 🛡 Register Middleware
+## Register Middleware
+
+### Laravel 10
 
 Add the middleware in `app/Http/Kernel.php`:
 
@@ -36,7 +41,17 @@ protected $middleware = [
 ];
 ```
 
-## 🚀 Publish Configuration & Migration
+### Laravel 11 / 12
+
+Register the middleware in `bootstrap/app.php`:
+
+```php
+->withMiddleware(function (Middleware $middleware) {
+    $middleware->append(\Imransaleem\HttpDbLogger\Middleware\LogHttpToDatabase::class);
+})
+```
+
+## Publish Configuration & Migration
 
 To publish the config and migration files, run:
 
@@ -51,33 +66,39 @@ Then run the migration:
 php artisan migrate
 ```
 
-## ✅ Example Usage
+## Example Usage
+
 You can apply the middleware to a specific route group like this:
 
-```bash
-use \Imransaleem\HttpDbLogger\Middleware\LogHttpToDatabase;
+```php
+use Imransaleem\HttpDbLogger\Middleware\LogHttpToDatabase;
 
 Route::middleware(['auth', LogHttpToDatabase::class])->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 });
 ```
 
-## ⚙️ Configuration Options
+## Configuration Options
 
-You can customize the logger via `config/http-db-logger.php`. Options include:
-- `log_requests`: boolean default true,
-- `log_authenticated_user`: Log user ID and role if authenticated.
-- `table`: logging table for database
+You can customize the logger via `config/http-db-logger.php`:
 
-## 🗃 Database Table
+- `log_requests` — enable/disable request logging (default: `true`)
+- `log_api_response` — store API response bodies (default: `true`)
+- `log_web_response` — store web response bodies (default: `false`)
+- `table` — logging table name (default: `http_db_logs`)
+
+## Database Table
 
 The package creates a `http_db_logs` table with the following fields:
+
 - `id`
 - `method`
-- `uri`
-- `ip`
-- `headers`
-- `body`
+- `url`
+- `request_type`
+- `request_body` (nullable)
+- `response_status` (nullable)
+- `response_body` (nullable)
+- `ip_address` (nullable)
 - `created_by` (nullable)
 - `user_role` (nullable)
 - `created_at` / `updated_at`

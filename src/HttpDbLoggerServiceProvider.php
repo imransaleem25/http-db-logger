@@ -6,20 +6,20 @@ use Illuminate\Support\ServiceProvider;
 
 class HttpDbLoggerServiceProvider extends ServiceProvider
 {
-    public function boot()
+    public function boot(): void
     {
         $this->publishes([
             __DIR__ . '/../config/http-db-logger.php' => config_path('http-db-logger.php'),
         ], 'config');
 
-        if (!class_exists('CreateHttpLogsTable')) {
+        if (! class_exists('CreateHttpLogsTable')) {
             $this->publishes([
                 __DIR__.'/database/migrations/create_http_logs_table.php.stub' => database_path('migrations/'.date('Y_m_d_His', time()).'_create_http_logs_table.php'),
             ], 'migrations');
         }
     }
 
-    public function register()
+    public function register(): void
     {
         $this->mergeConfigFrom(
             __DIR__ . '/../config/http-db-logger.php',
@@ -27,4 +27,3 @@ class HttpDbLoggerServiceProvider extends ServiceProvider
         );
     }
 }
-
